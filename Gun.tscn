@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://by6s3i8wt2dsj"]
+
+[ext_resource type="Script" path="res://Gun.gd" id="1_7uoll"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_42jna"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4db81"]
+albedo_color = Color(0, 0.376471, 0.129412, 1)
+
+[sub_resource type="TorusMesh" id="TorusMesh_dulof"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3cidi"]
+albedo_color = Color(0.215686, 0.364706, 0, 1)
+
+[node name="Gun" type="Node3D"]
+script = ExtResource("1_7uoll")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00671, 0, 0, 0, 1.00671, 0, 0, 0, 1.00671, 0, 0, 0)
+mesh = SubResource("BoxMesh_42jna")
+surface_material_override/0 = SubResource("StandardMaterial3D_4db81")
+
+[node name="Timer" type="Timer" parent="."]
+process_callback = 0
+autostart = true
+
+[node name="Origin" type="Node3D" parent="."]
+transform = Transform3D(1.00543, 0, 0, 0, 1.00543, 0, 0, 0, 1.00543, 0, 0, 0.797715)
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.261813, 0, 0, 0, -4.39463e-08, -0.32034, 0, 1.00537, -1.40025e-08, 0, 0, 0.517201)
+mesh = SubResource("TorusMesh_dulof")
+skeleton = NodePath("../Origin")
+surface_material_override/0 = SubResource("StandardMaterial3D_3cidi")
+
+[node name="Aim" type="Node3D" parent="."]
+transform = Transform3D(1.00543, 0, 0, 0, 1.00543, 0, 0, 0, 1.00543, 0, 0, 1.52539)
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

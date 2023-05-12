@@ -1,0 +1,88 @@
+[gd_scene load_steps=10 format=3 uid="uid://v1mgv0nje6nd"]
+
+[ext_resource type="PackedScene" uid="uid://bsf81r4f7u8cw" path="res://Player.tscn" id="1_bp33a"]
+[ext_resource type="PackedScene" uid="uid://by6s3i8wt2dsj" path="res://Gun.tscn" id="2_qqkup"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_4g51k"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_7scoo"]
+sky_material = SubResource("ProceduralSkyMaterial_4g51k")
+
+[sub_resource type="Environment" id="Environment_jfakt"]
+background_mode = 2
+sky = SubResource("Sky_7scoo")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_gt8uk"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_doh4p"]
+data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_bcwoc"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_q4td3"]
+data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
+
+[node name="Main" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_jfakt")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Map" type="Node3D" parent="."]
+
+[node name="Floor" type="MeshInstance3D" parent="Map"]
+transform = Transform3D(14.2719, 0, 0, 0, 1, 0, 0, 0, 14.2719, 0, 0, 0)
+mesh = SubResource("PlaneMesh_gt8uk")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Map/Floor"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Floor/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_doh4p")
+
+[node name="Wall" type="MeshInstance3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 13.3651, 0, 0, 0, 28.4892, -6.25827, 2.68795, 0)
+mesh = SubResource("BoxMesh_bcwoc")
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Map/Wall"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Wall/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_q4td3")
+
+[node name="Wall2" type="MeshInstance3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 13.3651, 0, 0, 0, 28.4892, -1.79801, 2.68795, 0)
+mesh = SubResource("BoxMesh_bcwoc")
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Map/Wall2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Wall2/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_q4td3")
+
+[node name="Player" parent="." node_paths=PackedStringArray("originPoint") instance=ExtResource("1_bp33a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0789, 1.07748, 12.8854)
+originPoint = NodePath("../OriginPoint")
+
+[node name="OriginPoint" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0789, 1.07748, 12.8854)
+
+[node name="Guns" type="Node3D" parent="."]
+
+[node name="Gun" parent="Guns" instance=ExtResource("2_qqkup")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -2.08671, 1.43367, 8.56755)
+
+[node name="Gun3" parent="Guns" instance=ExtResource("2_qqkup")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -2.08671, 1.43367, -0.555065)
+
+[node name="Gun2" parent="Guns" instance=ExtResource("2_qqkup")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -5.93707, 1.45303, 4.4319)
+
+[node name="Gun4" parent="Guns" instance=ExtResource("2_qqkup")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -5.93707, 1.45303, -5.90085)
