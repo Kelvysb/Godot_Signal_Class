@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://dlpm3qyxte4r4"]
+
+[ext_resource type="Script" path="res://Player.gd" id="1_1f0gx"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_dcria"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_xe1ps"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_klqd2"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3ilbj"]
+radius = 1.0643
+height = 3.22167
+
+[node name="Player" type="CharacterBody3D" groups=["player"]]
+script = ExtResource("1_1f0gx")
+
+[node name="Geometry" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_dcria")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Geometry"]
+transform = Transform3D(0.581448, 0, 0, 0, -2.01629e-08, 0.346529, 0, -0.461274, -1.51473e-08, -0.000645518, 0.523103, -0.198708)
+mesh = SubResource("CylinderMesh_xe1ps")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_klqd2")
+
+[node name="Pivot" type="SpringArm3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.928913, 0.370298, 0, -0.370298, 0.928913, 0.488961, 1.48651, 0)
+spring_length = 4.0
+
+[node name="Camera3D" type="Camera3D" parent="Pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.85004)
+
+[node name="PlayerArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_3ilbj")
+
+[connection signal="body_entered" from="PlayerArea" to="." method="_on_player_area_body_entered"]
